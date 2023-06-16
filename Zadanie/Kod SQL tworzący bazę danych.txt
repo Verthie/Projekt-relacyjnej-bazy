@@ -1,0 +1,442 @@
+USE master;
+
+IF DB_ID(N'w65539Project') IS NOT NULL DROP DATABASE w65539Project;
+
+IF @@ERROR = 3702
+RAISERROR(N'Baza danych nie może zostać usunięta, gdyż istnieją otwarte połączenia.', 127, 127) WITH NOWAIT, LOG;
+
+CREATE DATABASE w65539Project;
+GO
+
+USE w65539Project;
+GO
+
+/****** Object:  Table [dbo].[Frekwencja]    Script Date: 01.01.2023 00:57:00 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[Frekwencja](
+	[obecnoscid] [int] NOT NULL,
+	[iloscwszystkichgodzin] [int] NOT NULL,
+	[iloscnieobecnosci] [int] NULL,
+	[studid] [int] NOT NULL,
+	[przedmiotid] [int] NOT NULL,
+ CONSTRAINT [PK_Frekwencja] PRIMARY KEY CLUSTERED 
+(
+	[obecnoscid] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[Frekwencja]  WITH CHECK ADD  CONSTRAINT [FK_Frekwencja_Przedmioty] FOREIGN KEY([przedmiotid])
+REFERENCES [dbo].[Przedmioty] ([przedmiotid])
+GO
+
+ALTER TABLE [dbo].[Frekwencja] CHECK CONSTRAINT [FK_Frekwencja_Przedmioty]
+GO
+
+ALTER TABLE [dbo].[Frekwencja]  WITH CHECK ADD  CONSTRAINT [FK_Frekwencja_Studenci] FOREIGN KEY([studid])
+REFERENCES [dbo].[Studenci] ([studid])
+GO
+
+ALTER TABLE [dbo].[Frekwencja] CHECK CONSTRAINT [FK_Frekwencja_Studenci]
+GO
+
+/****** Object:  Table [dbo].[KategoriePrzedmiotu]    Script Date: 01.01.2023 01:01:20 ******/
+
+CREATE TABLE [dbo].[KategoriePrzedmiotu](
+	[nazwakategorii] [nvarchar](50) NOT NULL,
+	[przedmiotid] [int] NOT NULL
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[KategoriePrzedmiotu]  WITH CHECK ADD  CONSTRAINT [FK_KategoriePrzedmiotu_Przedmioty] FOREIGN KEY([przedmiotid])
+REFERENCES [dbo].[Przedmioty] ([przedmiotid])
+GO
+
+ALTER TABLE [dbo].[KategoriePrzedmiotu] CHECK CONSTRAINT [FK_KategoriePrzedmiotu_Przedmioty]
+GO
+
+/****** Object:  Table [dbo].[Kierunki]    Script Date: 01.01.2023 01:01:35 ******/
+
+CREATE TABLE [dbo].[Kierunki](
+	[kierunekid] [int] NOT NULL,
+	[nazwakierunku] [nvarchar](50) NOT NULL,
+ CONSTRAINT [PK_Kierunki] PRIMARY KEY CLUSTERED 
+(
+	[kierunekid] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+/****** Object:  Table [dbo].[Konta]    Script Date: 01.01.2023 01:01:46 ******/
+
+CREATE TABLE [dbo].[Konta](
+	[email] [nvarchar](50) NOT NULL,
+	[ostatnielogowanie] [datetime] NOT NULL,
+	[studid] [int] NOT NULL,
+ CONSTRAINT [PK_Konta_1] PRIMARY KEY CLUSTERED 
+(
+	[studid] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[Konta]  WITH CHECK ADD  CONSTRAINT [FK_Konta_Studenci] FOREIGN KEY([studid])
+REFERENCES [dbo].[Studenci] ([studid])
+GO
+
+ALTER TABLE [dbo].[Konta] CHECK CONSTRAINT [FK_Konta_Studenci]
+GO
+
+/****** Object:  Table [dbo].[NumerBudynku]    Script Date: 01.01.2023 01:01:55 ******/
+
+CREATE TABLE [dbo].[NumerBudynku](
+	[budynekid] [int] NOT NULL,
+	[numerbudynku] [nvarchar](50) NOT NULL,
+	[wydzialid] [int] NOT NULL,
+ CONSTRAINT [PK_NumerBudynku] PRIMARY KEY CLUSTERED 
+(
+	[budynekid] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[NumerBudynku]  WITH CHECK ADD  CONSTRAINT [FK_NumerBudynku_Wydzialy] FOREIGN KEY([wydzialid])
+REFERENCES [dbo].[Wydzialy] ([wydzialid])
+GO
+
+ALTER TABLE [dbo].[NumerBudynku] CHECK CONSTRAINT [FK_NumerBudynku_Wydzialy]
+GO
+
+/****** Object:  Table [dbo].[NumeryAlbumu]    Script Date: 01.01.2023 01:02:10 ******/
+
+CREATE TABLE [dbo].[NumeryAlbumu](
+	[numeralbumu] [nvarchar](50) NOT NULL,
+	[studid] [int] NOT NULL,
+ CONSTRAINT [PK_NumeryAlbumu_1] PRIMARY KEY CLUSTERED 
+(
+	[studid] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[NumeryAlbumu]  WITH CHECK ADD  CONSTRAINT [FK_NumeryAlbumu_Studenci] FOREIGN KEY([studid])
+REFERENCES [dbo].[Studenci] ([studid])
+GO
+
+ALTER TABLE [dbo].[NumeryAlbumu] CHECK CONSTRAINT [FK_NumeryAlbumu_Studenci]
+GO
+
+/****** Object:  Table [dbo].[Oceny]    Script Date: 01.01.2023 01:02:18 ******/
+
+CREATE TABLE [dbo].[Oceny](
+	[ocenaid] [int] NOT NULL,
+	[ocena] [decimal](2, 1) NULL,
+	[studid] [int] NOT NULL,
+	[przedmiotid] [int] NOT NULL,
+ CONSTRAINT [PK_Oceny] PRIMARY KEY CLUSTERED 
+(
+	[ocenaid] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[Oceny]  WITH CHECK ADD  CONSTRAINT [FK_Oceny_Przedmioty] FOREIGN KEY([przedmiotid])
+REFERENCES [dbo].[Przedmioty] ([przedmiotid])
+GO
+
+ALTER TABLE [dbo].[Oceny] CHECK CONSTRAINT [FK_Oceny_Przedmioty]
+GO
+
+ALTER TABLE [dbo].[Oceny]  WITH CHECK ADD  CONSTRAINT [FK_Oceny_Studenci] FOREIGN KEY([studid])
+REFERENCES [dbo].[Studenci] ([studid])
+GO
+
+ALTER TABLE [dbo].[Oceny] CHECK CONSTRAINT [FK_Oceny_Studenci]
+GO
+
+/****** Object:  Table [dbo].[Oplaty]    Script Date: 01.01.2023 01:02:26 ******/
+
+CREATE TABLE [dbo].[Oplaty](
+	[oplataid] [int] NOT NULL,
+	[wysokoscoplaty] [decimal](10, 2) NOT NULL,
+	[dataoplacenia] [datetime] NULL,
+	[studid] [int] NOT NULL,
+ CONSTRAINT [PK_Oplaty] PRIMARY KEY CLUSTERED 
+(
+	[oplataid] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[Oplaty]  WITH CHECK ADD  CONSTRAINT [FK_Oplaty_Konta] FOREIGN KEY([studid])
+REFERENCES [dbo].[Konta] ([studid])
+GO
+
+ALTER TABLE [dbo].[Oplaty] CHECK CONSTRAINT [FK_Oplaty_Konta]
+GO
+
+/****** Object:  Table [dbo].[Podania]    Script Date: 01.01.2023 01:02:34 ******/
+
+CREATE TABLE [dbo].[Podania](
+	[podanieid] [int] NOT NULL,
+	[datazlozenia] [datetime] NOT NULL,
+	[studid] [int] NOT NULL,
+ CONSTRAINT [PK_Podania] PRIMARY KEY CLUSTERED 
+(
+	[podanieid] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[Podania]  WITH CHECK ADD  CONSTRAINT [FK_Podania_Konta] FOREIGN KEY([studid])
+REFERENCES [dbo].[Konta] ([studid])
+GO
+
+ALTER TABLE [dbo].[Podania] CHECK CONSTRAINT [FK_Podania_Konta]
+GO
+
+/****** Object:  Table [dbo].[Pokoj]    Script Date: 01.01.2023 01:02:42 ******/
+
+CREATE TABLE [dbo].[Pokoj](
+	[pokojid] [int] NOT NULL,
+	[numerpokoju] [nvarchar](50) NOT NULL,
+	[przedmiotid] [int] NOT NULL,
+ CONSTRAINT [PK_Pokoj] PRIMARY KEY CLUSTERED 
+(
+	[pokojid] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[Pokoj]  WITH CHECK ADD  CONSTRAINT [FK_Pokoj_Przedmioty] FOREIGN KEY([przedmiotid])
+REFERENCES [dbo].[Przedmioty] ([przedmiotid])
+GO
+
+ALTER TABLE [dbo].[Pokoj] CHECK CONSTRAINT [FK_Pokoj_Przedmioty]
+GO
+
+/****** Object:  Table [dbo].[PoprzednieRokiSzkolne]    Script Date: 01.01.2023 01:02:49 ******/
+
+CREATE TABLE [dbo].[PoprzednieRokiSzkolne](
+	[rokid] [int] NOT NULL,
+	[rok] [int] NOT NULL,
+	[studid] [int] NOT NULL,
+ CONSTRAINT [PK_PoprzednieRokiSzkolne] PRIMARY KEY CLUSTERED 
+(
+	[rokid] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[PoprzednieRokiSzkolne]  WITH CHECK ADD  CONSTRAINT [FK_PoprzednieRokiSzkolne_Studenci] FOREIGN KEY([studid])
+REFERENCES [dbo].[Studenci] ([studid])
+GO
+
+ALTER TABLE [dbo].[PoprzednieRokiSzkolne] CHECK CONSTRAINT [FK_PoprzednieRokiSzkolne_Studenci]
+GO
+
+/****** Object:  Table [dbo].[Pracownicy]    Script Date: 01.01.2023 01:02:57 ******/
+
+CREATE TABLE [dbo].[Pracownicy](
+	[pracownikid] [int] NOT NULL,
+	[imie] [nvarchar](50) NOT NULL,
+	[nazwisko] [nvarchar](50) NOT NULL,
+	[tytul] [nvarchar](50) NULL,
+	[dataurodzenia] [datetime] NULL,
+	[datazatrudnienia] [datetime] NULL,
+	[panstwo] [nvarchar](50) NULL,
+	[numertel] [nvarchar](50) NULL,
+	[pensja] [decimal](18, 2) NOT NULL,
+	[wydzialid] [int] NOT NULL,
+	[przedmiotid] [int] NOT NULL,
+ CONSTRAINT [PK_Pracownicy] PRIMARY KEY CLUSTERED 
+(
+	[pracownikid] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[Pracownicy] ADD  DEFAULT ((10)) FOR [przedmiotid]
+GO
+
+ALTER TABLE [dbo].[Pracownicy]  WITH CHECK ADD  CONSTRAINT [FK_Pracownicy_Przedmioty] FOREIGN KEY([przedmiotid])
+REFERENCES [dbo].[Przedmioty] ([przedmiotid])
+GO
+
+ALTER TABLE [dbo].[Pracownicy] CHECK CONSTRAINT [FK_Pracownicy_Przedmioty]
+GO
+
+ALTER TABLE [dbo].[Pracownicy]  WITH CHECK ADD  CONSTRAINT [FK_Pracownicy_Wydzialy] FOREIGN KEY([wydzialid])
+REFERENCES [dbo].[Wydzialy] ([wydzialid])
+GO
+
+ALTER TABLE [dbo].[Pracownicy] CHECK CONSTRAINT [FK_Pracownicy_Wydzialy]
+GO
+
+/****** Object:  Table [dbo].[Przedmioty]    Script Date: 01.01.2023 01:03:05 ******/
+
+CREATE TABLE [dbo].[Przedmioty](
+	[przedmiotid] [int] NOT NULL,
+	[nazwaprzedmiotu] [nvarchar](50) NOT NULL,
+	[kierunekid] [int] NOT NULL,
+ CONSTRAINT [PK_Przedmioty] PRIMARY KEY CLUSTERED 
+(
+	[przedmiotid] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[Przedmioty]  WITH CHECK ADD  CONSTRAINT [FK_Przedmioty_Kierunki] FOREIGN KEY([kierunekid])
+REFERENCES [dbo].[Kierunki] ([kierunekid])
+GO
+
+ALTER TABLE [dbo].[Przedmioty] CHECK CONSTRAINT [FK_Przedmioty_Kierunki]
+GO
+
+/****** Object:  Table [dbo].[RodzajOceny]    Script Date: 01.01.2023 01:03:11 ******/
+
+CREATE TABLE [dbo].[RodzajOceny](
+	[nazwarodzaju] [nvarchar](50) NOT NULL,
+	[ocenaid] [int] NOT NULL,
+ CONSTRAINT [PK_RodzajOceny] PRIMARY KEY CLUSTERED 
+(
+	[ocenaid] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[RodzajOceny]  WITH CHECK ADD  CONSTRAINT [FK_RodzajOceny_Oceny] FOREIGN KEY([ocenaid])
+REFERENCES [dbo].[Oceny] ([ocenaid])
+GO
+
+ALTER TABLE [dbo].[RodzajOceny] CHECK CONSTRAINT [FK_RodzajOceny_Oceny]
+GO
+
+/****** Object:  Table [dbo].[Specjalnosci]    Script Date: 01.01.2023 01:03:18 ******/
+
+CREATE TABLE [dbo].[Specjalnosci](
+	[specjalnoscid] [int] NOT NULL,
+	[nazwaspecjalnosci] [nvarchar](50) NOT NULL,
+	[kierunekid] [int] NOT NULL,
+ CONSTRAINT [PK_Specjalnosci] PRIMARY KEY CLUSTERED 
+(
+	[specjalnoscid] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[Specjalnosci]  WITH CHECK ADD  CONSTRAINT [FK_Specjalnosci_Kierunki] FOREIGN KEY([kierunekid])
+REFERENCES [dbo].[Kierunki] ([kierunekid])
+GO
+
+ALTER TABLE [dbo].[Specjalnosci] CHECK CONSTRAINT [FK_Specjalnosci_Kierunki]
+GO
+
+/****** Object:  Table [dbo].[SredniaKoncowa]    Script Date: 01.01.2023 01:03:24 ******/
+
+CREATE TABLE [dbo].[SredniaKoncowa](
+	[srednia] [float] NOT NULL,
+	[rokid] [int] NOT NULL
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[SredniaKoncowa]  WITH CHECK ADD  CONSTRAINT [FK_SredniaKoncowa_PoprzednieRokiSzkolne] FOREIGN KEY([rokid])
+REFERENCES [dbo].[PoprzednieRokiSzkolne] ([rokid])
+GO
+
+ALTER TABLE [dbo].[SredniaKoncowa] CHECK CONSTRAINT [FK_SredniaKoncowa_PoprzednieRokiSzkolne]
+GO
+
+/****** Object:  Table [dbo].[Studenci]    Script Date: 01.01.2023 01:03:30 ******/
+
+CREATE TABLE [dbo].[Studenci](
+	[studid] [int] NOT NULL,
+	[imie] [nvarchar](50) NOT NULL,
+	[nazwisko] [nvarchar](50) NOT NULL,
+	[dataurodzenia] [datetime] NOT NULL,
+	[panstwo] [nvarchar](50) NOT NULL,
+	[numertelefonu] [nvarchar](50) NULL,
+	[wydzialid] [int] NOT NULL,
+	[kierunekid] [int] NOT NULL,
+ CONSTRAINT [PK_Studenci] PRIMARY KEY CLUSTERED 
+(
+	[studid] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[Studenci]  WITH CHECK ADD  CONSTRAINT [FK_Studenci_Kierunki] FOREIGN KEY([kierunekid])
+REFERENCES [dbo].[Kierunki] ([kierunekid])
+GO
+
+ALTER TABLE [dbo].[Studenci] CHECK CONSTRAINT [FK_Studenci_Kierunki]
+GO
+
+ALTER TABLE [dbo].[Studenci]  WITH CHECK ADD  CONSTRAINT [FK_Studenci_Wydzialy] FOREIGN KEY([wydzialid])
+REFERENCES [dbo].[Wydzialy] ([wydzialid])
+GO
+
+ALTER TABLE [dbo].[Studenci] CHECK CONSTRAINT [FK_Studenci_Wydzialy]
+GO
+
+/****** Object:  Table [dbo].[TypOplaty]    Script Date: 01.01.2023 01:03:36 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[TypOplaty](
+	[typopid] [int] NOT NULL,
+	[nazwa] [nvarchar](50) NOT NULL,
+	[oplataid] [int] NOT NULL,
+ CONSTRAINT [PK_TypOplaty] PRIMARY KEY CLUSTERED 
+(
+	[typopid] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[TypOplaty]  WITH CHECK ADD  CONSTRAINT [FK_TypOplaty_Oplaty] FOREIGN KEY([oplataid])
+REFERENCES [dbo].[Oplaty] ([oplataid])
+GO
+
+ALTER TABLE [dbo].[TypOplaty] CHECK CONSTRAINT [FK_TypOplaty_Oplaty]
+GO
+
+/****** Object:  Table [dbo].[TypPodania]    Script Date: 01.01.2023 01:03:42 ******/
+
+CREATE TABLE [dbo].[TypPodania](
+	[typpoid] [int] NOT NULL,
+	[nazwa] [nvarchar](50) NOT NULL,
+	[podanieid] [int] NOT NULL,
+ CONSTRAINT [PK_TypPodania] PRIMARY KEY CLUSTERED 
+(
+	[typpoid] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[TypPodania]  WITH CHECK ADD  CONSTRAINT [FK_TypPodania_Podania] FOREIGN KEY([podanieid])
+REFERENCES [dbo].[Podania] ([podanieid])
+GO
+
+ALTER TABLE [dbo].[TypPodania] CHECK CONSTRAINT [FK_TypPodania_Podania]
+GO
+
+/****** Object:  Table [dbo].[Wydzialy]    Script Date: 01.01.2023 01:03:49 ******/
+
+CREATE TABLE [dbo].[Wydzialy](
+	[wydzialid] [int] NOT NULL,
+	[nazwawydzialu] [nvarchar](50) NOT NULL,
+ CONSTRAINT [PK_Wydzialy] PRIMARY KEY CLUSTERED 
+(
+	[wydzialid] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO

@@ -1,0 +1,186 @@
+1a
+SELECT imie, nazwisko, pensja
+FROM Pracownicy
+ORDER BY pensja ASC
+OFFSET 10 ROWS
+
+1b
+SELECT DISTINCT TOP 1 WITH TIES studid, COUNT(ocena) AS iloscocen
+FROM Oceny
+WHERE ocena = 3
+GROUP BY studid
+ORDER BY iloscocen DESC
+
+1c
+SELECT DISTINCT TOP 3 srednia
+FROM SredniaKoncowa
+ORDER BY srednia DESC
+
+1d
+SELECT CONCAT('w', numeralbumu) AS NumeryAlbumu
+FROM NumeryAlbumu
+WHERE numeralbumu BETWEEN 6500 AND 6675
+
+2a
+SELECT CONCAT('Przedmiot: ', nazwaprzedmiotu, ' Sala: ', numerpokoju) AS PokojePrzedmiotow
+FROM Pokoj AS PO INNER JOIN Przedmioty AS PR
+ON PO.przedmiotid = PR.przedmiotid
+
+2b
+SELECT DISTINCT imie, nazwisko
+FROM Studenci AS S
+INNER JOIN Oplaty AS O ON S.studid = O.studid
+WHERE dataoplacenia IS NULL
+
+2c
+SELECT imie, nazwisko, iloscnieobecnosci, iloscwszystkichgodzin, nazwaprzedmiotu, 
+CONCAT(IIF(iloscnieobecnosci IS NULL, 100, ROUND(((CAST(iloscwszystkichgodzin AS FLOAT)-CAST(iloscnieobecnosci AS FLOAT))/iloscwszystkichgodzin*100),0)),'%') AS ProcentFrekwencji
+FROM Studenci AS S
+INNER JOIN Frekwencja AS F ON S.studid = F.studid
+INNER JOIN Przedmioty AS P ON F.przedmiotid = P.przedmiotid
+WHERE nazwaprzedmiotu = 'angielski'
+
+2d
+SELECT S.studid, S.imie, S.nazwisko, O.ocena, 
+ROUND(CAST(AVG(O.Ocena) OVER(PARTITION BY S.studid ORDER BY S.studid) AS FLOAT), 2) AS Srednia
+FROM Oceny AS O
+INNER JOIN Studenci AS S
+ON O.studid = S.studid
+
+3a
+SELECT S.imie, S.nazwisko,
+CASE WHEN O.ocena >= 3 THEN 'Zaliczone'
+WHEN O.ocena < 3 THEN 'Niezaliczone'
+ELSE 'Do zaliczenia' END AS StatusPrzedmiotu
+FROM Oceny AS O
+LEFT JOIN Studenci AS S
+ON O.studid = S.studid
+
+3b
+SELECT K.kierunekid, K.nazwakierunku, IIF(S.nazwaspecjalnosci IS NULL, 'nie posiada specjalnosci', S.nazwaspecjalnosci) AS NazwaSpecjalnosci
+FROM Kierunki AS K
+LEFT JOIN Specjalnosci AS S
+ON K.kierunekid = S.kierunekid
+
+3c
+SELECT DISTINCT S.imie, S.nazwisko, INF.nazwakierunku
+FROM Studenci AS S
+LEFT JOIN
+(
+SELECT S.studid, S.imie, S.nazwisko, K.kierunekid, K.nazwakierunku
+FROM Studenci AS S
+INNER JOIN Kierunki AS K
+ON S.kierunekid = K.kierunekid
+WHERE nazwakierunku = 'Informatyka'
+) AS INF
+ON S.kierunekid = INF.kierunekid
+ORDER BY INF.nazwakierunku DESC
+
+4a
+SELECT (SELECT imie FROM Studenci AS S WHERE S.studid = K.studid) AS ImieStudenta, nazwisko , email, CONVERT(VARCHAR, ostatnielogowanie, 108) AS GodzinaLogowania
+FROM Konta AS K
+INNER JOIN Studenci AS S
+ON K.studid = S.studid
+WHERE DATEPART(HOUR, ostatnielogowanie) < 10
+
+4b
+SELECT DISTINCT S.studid, S.imie, S.nazwisko, 
+(
+SELECT numeralbumu
+FROM NumeryAlbumu AS NA
+WHERE S.studid = NA.studid
+) AS NumerAlbumu
+FROM Studenci AS S
+
+4c
+SELECT Studenci.imie, Studenci.nazwisko, 
+(
+SELECT COUNT(*) 
+FROM Podania 
+WHERE Podania.studid = Konta.studid) AS LiczbaPodan
+FROM Konta
+INNER JOIN Studenci
+ON Konta.studid = Studenci.studid
+ORDER BY LiczbaPodan DESC
+
+5a
+SELECT TOP 1 O.studid, NI.ilosc, SUM(O.wysokoscoplaty) AS suma
+FROM Oplaty AS O
+INNER JOIN
+(
+SELECT TOP 1 WITH TIES studid, COUNT(wysokoscoplaty) AS ilosc
+FROM Oplaty
+WHERE dataoplacenia IS NULL
+GROUP BY studid
+ORDER BY ilosc DESC
+) AS NI
+ON O.studid = NI.studid
+GROUP BY O.studid, NI.ilosc
+ORDER BY suma DESC
+
+5b
+SELECT S.imie, S.nazwisko, SO.SumaOcen
+FROM Studenci AS S
+INNER JOIN
+(
+SELECT studid, SUM(ocena) AS SumaOcen
+FROM Oceny
+GROUP BY studid
+HAVING SUM(ocena) > 11
+) AS SO
+ON S.studid = SO.studid
+ORDER BY S.studid ASC
+
+5c
+SELECT S.imie, S.nazwisko, SO.SumaOplat
+FROM Studenci AS S
+INNER JOIN
+(
+SELECT studid, SUM(wysokoscoplaty) AS SumaOplat
+FROM Oplaty
+GROUP BY studid
+HAVING SUM(wysokoscoplaty) > 1000
+) AS SO
+ON S.studid = SO.studid
+ORDER BY SO.SumaOplat DESC
+
+5d
+SELECT ROUND([2015],2) AS SredniaWszystkich2015, ROUND([2016],2) AS SredniaWszystkich2016, ROUND([2017],2) AS SredniaWszystkich2017
+FROM (
+SELECT P.rok, AVG(S.srednia) AS SredniaSrednich
+FROM PoprzednieRokiSzkolne AS P
+INNER JOIN SredniaKoncowa AS S
+ON P.rokid = S.rokid
+GROUP BY P.rok
+) AS Tymczas
+PIVOT(
+AVG(SredniaSrednich)
+FOR rok IN ([2015], [2016], [2017])) AS PV
+
+6a
+SELECT DISTINCT S.panstwo 
+FROM Studenci AS S
+WHERE EXISTS(
+SELECT P.panstwo
+FROM Pracownicy AS P
+WHERE S.panstwo=P.panstwo)
+
+6b
+SELECT ROUND(AVG(srednia),2) AS SredniaSrednichZ2016Roku
+FROM SredniaKoncowa
+WHERE EXISTS(
+SELECT rokid
+FROM PoprzednieRokiSzkolne
+WHERE SredniaKoncowa.rokid = PoprzednieRokiSzkolne.rokid AND rok = 2016
+)
+
+6c
+SELECT nazwawydzialu
+FROM Wydzialy
+WHERE EXISTS (
+SELECT S.wydzialid, COUNT(S.studid) AS IloscStudentowNaWydziale
+FROM Studenci AS S
+WHERE S.wydzialid = Wydzialy.wydzialid
+GROUP BY S.wydzialid
+HAVING COUNT(S.studid) > 90
+)
