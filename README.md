@@ -1,14 +1,14 @@
 # Projekt systemu bazodanowego do zarządzania szkołą
 
 ## Założenia projektu
-Tematem projektu jest system bazodanowy do obsługi uczelni.  
-- Baza danych zawierać będzie dane osobowe studentów oraz wykładowców.
+Tematem projektu jest system bazodanowy do obsługi uczelni
+- Baza danych zawierać będzie dane osobowe studentów oraz wykładowców
 - Umożliwi sprawdzenie aktywności studentów w tym: oceny, frekwencje, ostatni czas logowania do strony uczelnianej
 - Pozwoli na sprawdzenie opłat oraz podań złożonych przez studentów, studenci będą mieli dostęp do tych informacji za pośrednictwem ich szkolnego konta
-- W systemie tym zawarta będzie całkowita frekwencja jak i oceny studenta na poszczególnych zajęciach.
-- Umożliwi dostęp do danych odnośnie, zajęć prowadzonych przez wykładowców takich jak numer pokoju oraz nazwa przedmiotu.
-- Pozwoli na wgląd do poszczególnych wydziałów i sprawdzenie przynależności do wydziału każdego studenta jak i pracownika.
-- Umożliwi sprawdzenie, do którego kierunku należy student oraz jego oceny w aktualnym semestrze, a także oceny końcowe z poprzednich semestrów.
+- W systemie tym zawarta będzie całkowita frekwencja jak i oceny studenta na poszczególnych zajęciach
+- Umożliwi dostęp do danych odnośnie, zajęć prowadzonych przez wykładowców takich jak numer pokoju oraz nazwa przedmiotu
+- Pozwoli na wgląd do poszczególnych wydziałów i sprawdzenie przynależności do wydziału każdego studenta jak i pracownika
+- Umożliwi sprawdzenie, do którego kierunku należy student oraz jego oceny w aktualnym semestrze, a także oceny końcowe z poprzednich semestrów
 
 ## Użytkownicy systemu bazodanowego
 Na podstawie założeń tego systemu 3 grupy uzyskają dostęp do bazy danych w określonym zakresie:
@@ -19,7 +19,7 @@ Na podstawie założeń tego systemu 3 grupy uzyskają dostęp do bazy danych w 
 - Wykładowcy
   - Będą mogli dodawać oraz modyfikować oceny studentów, zarządzać aktywnością oraz obecnością studenta
   - Zarówno wykładowcy jak i studenci otrzymają wgląd do przedmiotów, przypisanych im sal oraz numer budynku, na którym znajduje się ich wydział
-  - Uzyskają możliwość sprawdzania przedmiotów i do jakiego typu należą spośród trzech: wykład, laboratorium, projekt.
+  - Uzyskają możliwość sprawdzania przedmiotów i do jakiego typu należą spośród trzech: wykład, laboratorium, projekt
 - Studenci
   - Dostaną możliwość wglądu i tworzenia części danych znajdujących się w bazie poprzez konto uczelniane
   - Po zalogowaniu się na stronę otrzymąją wgląd do swoich ocen końcowych, do tworzenia skarg oraz podań, a także sprawdzania informacji dotyczących opłat na wydatki uczelniane typu czesne lub opłata za legitymacje
@@ -36,7 +36,7 @@ Dane znajdujące się w bazie:
 ## Raporty i zestawienia
 Raporty i zestawienia sporządzone na podstawie utworzonej bazy:
 - Lista pracowników i ich pensji
-- Lista studentów z największą ilością occen dostatecznych w obecnym roku szkolnym
+- Lista studentów z największą ilością ocen dostatecznych w obecnym roku szkolnym
 - Wyświetlanie najwyższych nie powtarzających się średnich końcowych ze wszystkich lat
 - Wyświetlanie numerów albumu z konkretnego przedziału
 - Tworzenie ciągu reprezentującego nazwę przedmiotu i przypisanego pokoju, w którym jest wykładany
@@ -90,12 +90,12 @@ Dane wykorzystane w bazie zostały wygenerowane przy wykorzystaniu:
 - języka programowania python - do generowania danych spójnych między poszczególnymi tabelami
 
 Podczas generowania danych do systemu zarządzania uczelnią kierowałem się podanymi założeniami:
-- Aktualny rok szkolny rozpoczął się 1 września 2018 roku.
-- Wszyscy studenci zaczęli studiować od tego samego roku, a czas ukończenia studiów trwa 4 lata, obecnie znajdują się na ostatnim roku studiów.
-- Dane z poprzednich roków szkolnych w połączeniu z danymi średnich końcowych umożliwiają jedynie na wgląd do oceń końcowych ucznia z trzech poprzednich lat.
-- Każdy uczeń ma przypisane jedno konto uczelniane, jeden numer albumu, jeden kierunek oraz 4 przedmioty.
-- W bazie znajduje się 10 przedmiotów.
-- Kierunek może nie mieć żadnej specjalności oraz mieć więcej niż jedną.
-- Każdy pokój ma przypisany 1 przedmiot, który jest w nim prowadzony.
-- Każdy przedmiot posiada po cztery kategorie: wykład, ćwiczenia, laboratorium, projekt.
-- Każdy student jak i pracownik przydzielony jest do jednego wydziału.
+- Aktualny rok szkolny rozpoczął się 1 września 2018 roku
+- Wszyscy studenci zaczęli studiować od tego samego roku, a czas ukończenia studiów trwa 4 lata, obecnie znajdują się na ostatnim roku studiów
+- Dane z poprzednich roków szkolnych w połączeniu z danymi średnich końcowych umożliwiają jedynie na wgląd do oceń końcowych ucznia z trzech poprzednich lat
+- Każdy uczeń ma przypisane jedno konto uczelniane, jeden numer albumu, jeden kierunek oraz 4 przedmioty
+- Na uczelni wykładane jest 10 przedmiotów
+- Kierunek może nie mieć żadnej specjalności oraz mieć więcej niż jedną
+- Każdy pokój ma przypisany 1 przedmiot, który jest w nim prowadzony
+- Każdy przedmiot posiada po cztery kategorie: wykład, ćwiczenia, laboratorium, projekt
+- Każdy student jak i pracownik przydzielony jest do jednego wydziału
