@@ -45,9 +45,6 @@ Założenia generowanych danych:
 - Przedmiot przypisany do 1 pokoju
 - Kierunek może mieć wiele specjalności
 
-## 🧩 Diagram ERD
-![Diagram](https://github.com/Verthie/Projekt-relacyjnej-bazy/assets/47531645/341c0cc0-95ef-4805-bfc5-d13d444c2bf9)
-
 ## 📊 Główne raporty i zestawienia
 - Lista pracowników i ich pensji
 - Studenci z największą liczbą ocen dostatecznych
@@ -57,3 +54,6 @@ Założenia generowanych danych:
 - Lista kierunków i specjalności
 - Studenci według kierunku i logowania
 - Ilość podań, suma ocen, suma opłat
+
+## 🧩 Diagram ERD
+![Diagram](https://github.com/Verthie/Projekt-relacyjnej-bazy/assets/47531645/341c0cc0-95ef-4805-bfc5-d13d444c2bf9)
