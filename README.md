@@ -48,7 +48,7 @@ Założenia generowanych danych:
 ## 🧩 Diagram ERD
 ![Diagram](https://github.com/Verthie/Projekt-relacyjnej-bazy/assets/47531645/341c0cc0-95ef-4805-bfc5-d13d444c2bf9)
 
-## 📊 Główne Raporty i zestawienia
+## 📊 Raporty i zestawienia
 - Lista pracowników i ich pensji
 - Studenci z największą liczbą ocen dostatecznych
 - Najwyższe średnie końcowe
