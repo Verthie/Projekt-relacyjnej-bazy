@@ -48,17 +48,12 @@ Założenia generowanych danych:
 ## 🧩 Diagram ERD
 ![Diagram](https://github.com/Verthie/Projekt-relacyjnej-bazy/assets/47531645/341c0cc0-95ef-4805-bfc5-d13d444c2bf9)
 
-## 📊 Raporty i zestawienia
+## 📊 Główne raporty i zestawienia
 - Lista pracowników i ich pensji
 - Studenci z największą liczbą ocen dostatecznych
 - Najwyższe średnie końcowe
 - Studenci z nieuregulowanymi opłatami
 - Frekwencja procentowa na wybranym przedmiocie
-- Lista ocen i średnich
-- Status zaliczeń
 - Lista kierunków i specjalności
 - Studenci według kierunku i logowania
 - Ilość podań, suma ocen, suma opłat
-- Średnie z lat
-- Państwa pochodzenia studentów i pracowników
-- Wydziały z dużą liczbą studentów
