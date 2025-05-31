@@ -37,6 +37,7 @@ System obsługuje:
 Dane zostały wygenerowane za pomocą:
 - mockaroo.com
 - Skryptów Python
+
 Założenia generowanych danych:
 - Rok akademicki: start 01.09.2018
 - Studenci na ostatnim roku (4-letnie studia)
