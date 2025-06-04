@@ -31,7 +31,7 @@ System obsługuje:
 - Studenci: dane osobowe, oceny, obecność, opłaty, podania, przypisane przedmioty, obecny semestr, zgłoszenia
 - Pracownicy: dane osobowe, pensje, tytuł, przypisane przedmioty
 - Struktura uczelni: kierunki, specjalności, przedmioty, wydziały, pokoje
-- zKategorie zajęć: wykład, laboratorium, projekt
+- Kategorie zajęć: wykład, laboratorium, projekt
 
 ## ⚙️ Generowanie danych
 Dane zostały wygenerowane za pomocą:
